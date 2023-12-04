@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Template</title>
+</head>
+<body>
+
+
+
+    <h2>Update User</h2>
+    <form method="post" action="{% url 'userPut' %}">
+        {% csrf_token %}
+
+        <input type="hidden" name="_method" value="put">
+
+        <label>ID:</label>
+        <input type="number" name="id" value="{{ user.id }}"><br>
+<!--        {{ user.id }} &lt;!&ndash; Виводимо ідентифікатор для перевірки, його можна приховати після тестування &ndash;&gt;-->
+
+        <label>Username:</label>
+        <input type="text" name="username" value="{{ user.username }}" required><br>
+
+        <label>Email:</label>
+        <input type="email" name="email" value="{{ user.email }}" required><br>
+
+        <label>Password:</label>
+        <input type="password" name="password" value="{{ user.password }}" required><br>
+
+        <label>Family ID:</label>
+        <input type="text" name="familyId_id" value="{{ user.familyId_id }}" required><br>
+
+        <!-- Додайте інші поля, якщо потрібно -->
+
+        <button type="submit">Update User</button>
+    </form>
+
+</body>
+</html>

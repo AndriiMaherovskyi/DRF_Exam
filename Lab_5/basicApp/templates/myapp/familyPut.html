@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Template</title>
+</head>
+<body>
+
+
+
+    <h2>Update Family</h2>
+    <form method="post" action="{% url 'familyPut' %}">
+        {% csrf_token %}
+
+        <input type="hidden" name="_method" value="put">
+
+        <label>ID:</label>
+        <input type="number" name="id" value="{{ family.id }}"><br>
+<!--        {{ user.id }} &lt;!&ndash; Виводимо ідентифікатор для перевірки, його можна приховати після тестування &ndash;&gt;-->
+
+        <label>Username:</label>
+        <input type="text" name="name" value="{{ family.name }}" required><br>
+
+
+        <button type="submit">Update User</button>
+    </form>
+
+</body>
+</html>

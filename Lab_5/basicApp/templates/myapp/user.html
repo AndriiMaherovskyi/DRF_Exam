@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Template</title>
+</head>
+<body>
+    <h1>Users List</h1>
+    <ul>
+        {% for user in users %}
+            <li>ID: {{ user.id }}, Username: {{ user.username }}, Email: {{ user.email }}</li>
+        {% endfor %}
+    </ul>
+
+
+    <h2>Add User</h2>
+    <form method="post" action="{% url 'user' %}">
+        {% csrf_token %}
+
+        <label>Id:</label>
+        <input type="number" name="id" required><br>
+
+        <label>Username:</label>
+        <input type="text" name="username" required><br>
+
+        <label>Email:</label>
+        <input type="email" name="email" required><br>
+
+        <label>Password:</label>
+        <input type="password" name="password" required><br>
+
+        <label>Family ID:</label>
+        <input type="text" name="familyId_id" required><br>
+
+        <!-- Додайте інші поля, якщо потрібно -->
+
+        <button type="submit">Add User</button>
+    </form>
+
+</body>
+</html>

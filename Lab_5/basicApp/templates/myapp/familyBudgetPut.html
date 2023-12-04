@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Template</title>
+</head>
+<body>
+
+
+
+    <h2>Update Budget</h2>
+    <form method="post" action="{% url 'familyBudgetPut' %}">
+        {% csrf_token %}
+
+        <input type="hidden" name="_method" value="put">
+
+        <label>ID:</label>
+        <input type="number" name="id" value="{{ familyBudget.id }}"><br>
+<!--        {{ user.id }} &lt;!&ndash; Виводимо ідентифікатор для перевірки, його можна приховати після тестування &ndash;&gt;-->
+
+        <label>Family id:</label>
+        <input type="text" name="familyId_id" value="{{ familyBudget.familyId_id }}" required><br>
+
+        <label>Budget:</label>
+        <input type="number" name="balance" value="{{ familyBudget.balance }}" required><br>
+
+
+        <button type="submit">Update Balance</button>
+    </form>
+
+</body>
+</html>

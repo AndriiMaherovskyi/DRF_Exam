@@ -1,0 +1,33 @@
+<!-- myapp/my_template.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Template</title>
+</head>
+<body>
+    <h1>Users List</h1>
+    <ul>
+        {% for user in users %}
+            <li>ID: {{ user.id }}, Username: {{ user.username }}, Email: {{ user.email }}</li>
+        {% endfor %}
+    </ul>
+
+    <h1>Families List</h1>
+    <ul>
+        {% for family in families %}
+            <li>ID: {{ family.id }}, Surname: {{ family.name }}</li>
+        {% endfor %}
+    </ul>
+
+    <h1>Family Budgets List</h1>
+    <ul>
+        {% for budget in family_budgets %}
+            <li>ID: {{ budget.id }}, Family ID: {{ budget.familyId_id }}, Balance: {{ budget.balance }}</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

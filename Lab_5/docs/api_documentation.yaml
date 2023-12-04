@@ -1,0 +1,158 @@
+swagger: '2.0'
+info:
+  title: Your Project API
+  version: 1.0.0
+paths:
+  /api/v1/usersList:
+    get:
+      summary: Get list of users or add one more
+      responses:
+        200:
+          description: Successful response
+    post:
+      summary: Add a new user
+      responses:
+        201:
+          description: User created successfully
+  /api/v1/usersList/{pk}:
+    put:
+      summary: Update current user
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: User updated successfully
+        404:
+          description: User not found
+  /api/v1/users/{pk}/:
+    get:
+      summary: Get single user info
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful response
+        404:
+          description: User not found
+  /api/v1/familiesList:
+    get:
+      summary: Get list of families or add one more
+      responses:
+        200:
+          description: Successful response
+    post:
+      summary: Add a new family
+      responses:
+        201:
+          description: Family created successfully
+  /api/v1/familiesList/{pk}:
+    put:
+      summary: Update current family
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Family updated successfully
+        404:
+          description: Family not found
+  /api/v1/families/{pk}:
+    get:
+      summary: Get single family info
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful response
+        404:
+          description: Family not found
+  /api/v1/family_budgetsList:
+    get:
+      summary: Get list of budgets or add one more
+      responses:
+        200:
+          description: Successful response
+    post:
+      summary: Add a new budget
+      responses:
+        201:
+          description: Budget created successfully
+  /api/v1/family_budgetsList/{pk}:
+    put:
+      summary: Update current budget
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Budget updated successfully
+        404:
+          description: Budget not found
+  /api/v1/family_budgets/{pk}:
+    get:
+      summary: Get single budget info
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful response
+        404:
+          description: Budget not found
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+      username:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+      familyId_id:
+        type: string
+  Family:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+  FamilyBudget:
+    type: object
+    properties:
+      id:
+        type: integer
+      familyId_id:
+        type: string
+      balance:
+        type: integer
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
