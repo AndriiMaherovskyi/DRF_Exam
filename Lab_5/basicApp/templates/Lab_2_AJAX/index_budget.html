@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>Create New Budget</h2>
+    <form id="budgetForm">
+        <label for="idInput">Id:</label>
+        <input type="number" id="idInput" name="id"><br><br>
+        <label for="familyIdInput">Family ID:</label>
+        <input type="text" id="familyIdInput" name="familyId_id"><br><br>
+        <label for="balanceInput">Balance:</label>
+        <input type="number" id="balanceInput" name="balance"><br><br>
+        <button type="button" id="submitBtn">Submit</button>
+<!--        <button type="button" id="updateBtn">Update</button>-->
+        <button type="button" id="incomeBtn">Income</button>
+        <button type="button" id="outcomeBtn">Outcome</button>
+    </form>
+
+    <div id="budgetData"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../../static/budget.js"></script>
+</body>
+</html>

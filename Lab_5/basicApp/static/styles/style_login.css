@@ -1,0 +1,53 @@
+@charset "UTF-8";
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  flex: 0.3 1 300px;
+  margin: 50px;
+  padding: 20px 30px 20px 30px;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+.container h2,
+.container input {
+  text-align: center;
+  display: block;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 1050px) {
+  .container {
+    margin: 45% 10px;
+    padding: 20px 30px 20px 30px;
+  }
+}
+.inp {
+  background-color: #ffffff;
+  color: #303030;
+  border: none; /* Видалення рамки */
+  padding: 10px 0px; /* Відступи в середині */
+  border-radius: 5px; /* Закруглені кути */
+  width: 100%;
+}
+
+.btn {
+  background-color: #333; /* Темно-сірий фон */
+  color: #fff; /* Білий текст */
+  border: none; /* Видалення рамки */
+  padding: 10px 20px; /* Відступи в середині */
+  border-radius: 30px; /* Закруглені кути */
+  cursor: pointer; /* Змінює вигляд курсору при наведенні */
+  height: 45px;
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: #fff; /* Темно-сірий фон при наведенні */
+  color: #333;
+  border-style: solid;
+  border-color: #333;
+}/*# sourceMappingURL=style_login.css.map */

@@ -5,6 +5,7 @@ import requests
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView, View
+from django.http import JsonResponse
 
 from .models import users, families, family_budgets
 from .serializers import usersSerializer, familySerializer, family_budgetSerializer
@@ -504,3 +505,105 @@ def home(request):
 # class basicAppAPIView(generics.ListAPIView):
 #     queryset = users.objects.all()
 #     serializer_class = usersSerializer
+
+class BasicAppAPIView(APIView):
+    def get(self, request):
+        user = users.objects.all()
+        serializer = usersSerializer(user, many=True)
+        return JsonResponse({'users': serializer.data})
+
+    def post(self, request):
+        serializer = usersSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk):
+        try:
+            instance = users.objects.get(pk=pk)
+        except users.DoesNotExist:
+            return Response({"error": "Object doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = usersSerializer(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "User updated successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def get_data(request):
+    api_response = BasicAppAPIView.as_view()(request)
+    return api_response
+
+def index(request):
+    return render(request, 'Lab_2_AJAX/index.html')
+
+class BasicAppAPIViewFamily(APIView):
+    def get(self, request):
+        family = families.objects.all()
+        serializer = familySerializer(family, many=True)
+        return JsonResponse({'families': serializer.data})
+
+    def post(self, request):
+        serializer = familySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({'message': 'Family created successfully'}, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk):
+        try:
+            instance = families.objects.get(pk=pk)
+        except families.DoesNotExist:
+            return Response({"error": "Object doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = familySerializer(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "User updated successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def get_data_family(request):
+    api_response = BasicAppAPIViewFamily.as_view()(request)
+    return api_response
+
+def index_family(request):
+    return render(request, 'Lab_2_AJAX/index_family.html')
+
+class BasicAppAPIViewBudget(APIView):
+    def get(self, request):
+        budget = family_budgets.objects.all()
+        serializer = family_budgetSerializer(budget, many=True)
+        return JsonResponse({'budgets': serializer.data})
+
+    def post(self, request):
+        serializer = family_budgetSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({'message': 'Budget created successfully'}, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk):
+        try:
+            instance = family_budgets.objects.get(pk=pk)
+        except family_budgets.DoesNotExist:
+            return Response({"error": "Object doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = family_budgetSerializer(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "User updated successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def get_data_budget(request):
+    api_response = BasicAppAPIViewBudget.as_view()(request)
+    return api_response
+
+def index_budget(request):
+    return render(request, 'Lab_2_AJAX/index_budget.html')
+
+def landing_budget(request):
+    return render(request, 'Lab_2_AJAX/landing_page.html')
+
+def login(request):
+    return render(request, 'Lab_2_AJAX/login_page.html')

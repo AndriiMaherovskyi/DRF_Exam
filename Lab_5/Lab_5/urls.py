@@ -31,7 +31,10 @@ from basicApp.views import (basicAppAPIView, SingleGetView, basicAppAPIViewFamil
                             SingleGetViewFamily, basicAppAPIViewFamilyBudgets,
                             SingleGetViewFamilyBudget, MyTemplateView, MyTemplatePutView,
                             FamilyView, FamilyViewPut, FamilyBudgetView, FamilyBudgetViewPut,
-                            UserView, UserViewPut, HomeView)
+                            UserView, UserViewPut, HomeView, get_data, index, BasicAppAPIView,
+                            BasicAppAPIViewFamily, get_data_family, index_family,
+                            BasicAppAPIViewBudget, get_data_budget, index_budget,
+                            landing_budget, login)
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -48,6 +51,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/drf-auth/', include('rest_framework.urls')),
     path('api/v1/usersList', basicAppAPIView.as_view(), name='user_list'), # get list of users or add one more
     path('api/v1/usersList/<int:pk>', basicAppAPIView.as_view(), name='user_list_detail'), # update current user
     path('api/v1/users/<int:pk>/', SingleGetView.as_view()), # get single user info
@@ -67,6 +71,21 @@ urlpatterns = [
     path('familyBudget/put', FamilyBudgetViewPut.as_view(), name='familyBudgetPut'),
     path('user/', UserView.as_view(), name='user'),
     path('user/put', UserViewPut.as_view(), name='userPut'),
+
+    path('api/data/', get_data, name='get_data'),
+    path('api/data/create/', BasicAppAPIView.as_view(), name='create_user'),
+    path('api/data/update/<int:pk>/', BasicAppAPIView.as_view(), name='update_user'),
+    path('api/data/page', index, name='index'),
+    path('api/dataFamily/', get_data_family, name='get_data_family'),
+    path('api/dataFamily/create/', BasicAppAPIViewFamily.as_view(), name='create_family'),
+    path('api/dataFamily/update/<int:pk>/', BasicAppAPIViewFamily.as_view(), name='update_family'),
+    path('api/dataFamily/page', index_family, name='index_family'),
+    path('api/dataBudget/', get_data_budget, name='get_data_budget'),
+    path('api/dataBudget/create/', BasicAppAPIViewBudget.as_view(), name='create_budget'),
+    path('api/dataBudget/update/<int:pk>/', BasicAppAPIViewBudget.as_view(), name='update_budget'),
+    path('api/dataBudget/page', index_budget, name='index_budget'),
+    path('api/landingBudget/page', landing_budget, name='landing_budget'),
+    path('api/login', login, name='login'),
 
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

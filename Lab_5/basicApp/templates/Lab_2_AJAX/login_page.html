@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="../../static/styles/style_login.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Вхід</h2>
+        <input class="inp" type="text" name="username" placeholder="Логін" required>
+        <input class="inp" type="password" name="password" placeholder="Пароль" required>
+        <input class="btn" type="submit" value="Вхід" onclick="window.location.href='http://127.0.0.1:8000/api/landingBudget/page'">
+    </div>
+
+    <style>
+        body {
+          background-image: url('../../static/images/bg_1.jpg');
+          /* background-size: cover; */
+          background-position: center;
+          /* background-repeat: no-repeat; */
+        }
+    </style>
+</body>
+</html>
