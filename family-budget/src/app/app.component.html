@@ -1,0 +1,205 @@
+<!-- <h2>Page work!!!</h2>
+<ul>
+  <li *ngFor="let user of users">
+    <h2>ID {{user.id}}</h2>
+    <h2 (click)="userClicked(user)">Name {{user.username}}</h2>
+    <h2>Email {{user.email}}</h2>
+  </li>
+</ul>
+<hr>
+Id<input type="number" [(ngModel)]="selectedUser.id"/><br>
+Username<input type="text" [(ngModel)]="selectedUser.username"/><br>
+Email<input type="text" [(ngModel)]="selectedUser.email"/><br>
+Password<input type="text" [(ngModel)]="selectedUser.password"/><br>
+Family id<input type="text" [(ngModel)]="selectedUser.familyId_id"/><br>
+<button (click)="updateUser()"> PUT</button>
+<button (click)="createUser()">POST</button>
+<ul>
+  <li *ngFor="let budget of budgets">
+    <h2>ID {{budget.id}}</h2>
+    <h2 (click)="budgetClicked(budget)">Name {{budget.balance}}</h2>
+  </li>
+</ul>
+<hr>
+Id<input type="number" [(ngModel)]="selectedBudget.id"/><br>
+Balance<input type="number" [(ngModel)]="selectedBudget.balance"/><br>
+Family id<input type="text" [(ngModel)]="selectedBudget.familyId_id"/><br>
+<button (click)="updateBudget()"> PUT</button>
+<button (click)="addToBudget()"> ADD </button>
+<button (click)="takeFromBudget()"> TAKE </button>
+<button (click)="createBudget()">POST</button>
+<ul>
+  <li *ngFor="let family of families">
+    <h2>ID {{family.id}}</h2>
+    <h2 (click)="familyClicked(family)">Name {{family.name}}</h2>
+  </li>
+</ul>
+<hr>
+Id<input type="number" [(ngModel)]="selectedFamily.id"/><br>
+Name<input type="text" [(ngModel)]="selectedFamily.name"/><br>
+<button (click)="updateFamily()"> PUT</button>
+<button (click)="createFamily()">POST</button>
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сімейний бюджет</title>
+    <link rel="stylesheet" href="app.component.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+<body>
+
+  <section [ngClass]="{'hidden': currentPart !== 'landing'}">
+    <header class="header">
+        <a href="index.html" class="logo">Сімейний бюджет</a>
+
+        <input type="checkbox" id="check">
+        <label for="check" class="icons">
+            <i class='bx bx-menu' id="menu-icon"></i>
+            <i class='bx bx-x' id="close-icon"></i>
+        </label>
+
+        <nav class="navbar">
+            <!-- <a href="#" style="--i:0;" class="toggle-link" (click)="showSection('main')">Головна</a> -->
+            <!-- <a href="#" style="--i:1;" id="income-expenses-link">Дохід/Витрати</a> -->
+            <a href="#" style="--i:1;" class="toggle-link" (click)="showSection('income-expense-section')">Дохід/Витрати</a>
+            <a href="#" style="--i:2;" class="toggle-link" (click)="showSection('add-to-family')">Додати до сім'ї</a>
+            <a href="#" style="--i:3;" class="toggle-link" (click)="showSection('create-family')">Створити сім'ю</a>
+            <a href="#" style="--i:3;" class="toggle-link" (click)="showSection('create-budget')">Створити бюджет</a>
+            <a href="#" style="--i:4;" class="toggle-link" (click)="showSection('personal-info')">Персональний кабінет</a>
+        </nav>
+    </header>
+    <main>
+        <section class="budget toggle-section" [ngClass]="{'hidden': currentSection !== 'main'}">
+            <div class="income">
+                <h2>Дохід</h2>
+                <p>+ 345.50</p>
+                <p>+ 1200.00</p>
+                <p>+ 840.00</p>
+                <p>+ 4500.00</p>
+                <p>+ 1900.20</p>
+            </div>
+            <div class="expenses">
+                <h2>Витрати</h2>
+                <p>- 344.15</p>
+                <p>- 120.50</p>
+                <p>- 84.20</p>
+                <p>- 450.21</p>
+                <p>- 19.20</p>
+            </div>
+            <div class="summary">
+                <h2>Загальний звіт</h2>
+                <p>+ 345.50</p>
+                <p>- 84.20</p>
+                <p>+ 1200.00</p>
+                <p>- 120.50</p>
+                <p>+ 840.00</p>
+                <p>- 450.21</p>
+                <p>+ 4500.00</p>
+                <p>- 19.20</p>
+                <p>+ 1900.20</p>
+                <p>- 344.15</p>
+            </div>
+        </section>
+        <section class="box toggle-section hidden" [ngClass]="{'hidden': currentSection !== 'income-expense-section'}">
+                <div class="expenses_add" >
+                    <h2>Додати витрату</h2>
+                    <input placeholder="0.00" type="number" class="inp" [(ngModel)]="toTake">
+                    <button class="btn" (click)="takeFromLogginedBudget()">Додати</button>
+                </div>
+                <div class="expenses_add">
+                    <h2>Витрати</h2>
+                    <p>- 344.15</p>
+                    <p>- 120.50</p>
+                    <p>- 84.20</p>
+                    <p>- 450.21</p>
+                    <p>- 19.20</p>
+                    <p *ngFor="let outcome of outcomes">- {{ outcome }}</p>
+                </div>
+                <div class="income_add">
+                    <h2>Додати дохід</h2>
+                    <input placeholder="0.00" type="number" class="inp" [(ngModel)]="toAdd">
+                    <button class="btn" (click)="addToLogginedBudget()">Додати</button>
+                </div>
+                <div class="income_add">
+                    <h2>Дохід</h2>
+                    <p>+ 345.50</p>
+                    <p>+ 1200.00</p>
+                    <p>+ 840.00</p>
+                    <p>+ 4500.00</p>
+                    <p>+ 1900.20</p>
+                    <p *ngFor="let income of incomes">+ {{ income }}</p>
+                </div>
+        </section>
+        <section class="box toggle-section hidden" [ngClass]="{'hidden': currentSection !== 'add-to-family'}">
+            <div class="add-to-family">
+                <h2>Додати до сім'ї</h2>
+                <input placeholder="id користувача" type="number" class="inp" [(ngModel)]="selectedUser.id">
+                <input placeholder="ім'я" class="inp" [(ngModel)]="selectedUser.username">
+                <input placeholder="пошта" class="inp" [(ngModel)]="selectedUser.email">
+                <input placeholder="пароль" class="inp" [(ngModel)]="selectedUser.password">
+                <input placeholder="id сім'ї" type="text" class="inp" [(ngModel)]="selectedUser.familyId_id"/>
+                <button class="btn" (click)="createUser()">Додати</button>
+            </div>
+        </section>
+        <section class="box toggle-section hidden" [ngClass]="{'hidden': currentSection !== 'create-family'}">
+            <div class="create-family">
+                <h2>Створити сім'ю</h2>
+                <input placeholder="id сім'ї" type="number" class="inp" [(ngModel)]="selectedFamily.id">
+                <input placeholder="прізвище сім'ї" class="inp" [(ngModel)]="selectedFamily.name">
+                <button class="btn" (click)="createFamily()">Створити</button>
+            </div>
+        </section>
+        <section class="box toggle-section hidden" [ngClass]="{'hidden': currentSection !== 'create-budget'}">
+            <div class="create-family">
+                <h2>Створити бюджет</h2>
+                <input placeholder="id бюджету" type="number" class="inp" [(ngModel)]="selectedBudget.id">
+                <input placeholder="баланс" type="number" class="inp" [(ngModel)]="selectedBudget.balance">
+                <input placeholder="id сім'ї" class="inp" [(ngModel)]="selectedBudget.familyId_id">
+                <button class="btn" (click)="createBudget()">Створити</button>
+            </div>
+        </section>
+        <section class="box toggle-section hidden" [ngClass]="{'hidden': currentSection !== 'personal-info'}">
+            <div class="personal-info">
+                <p class="font">Ім'я: {{ logginedUser.username }}</p>
+                <p class="font">Сім'я: {{logginedFamily.name }}</p>
+                <p class="font">Пошта: {{ logginedUser.email }}</p>
+                <p class="font">Баланс: {{ userBalance}}</p>
+                <button (click)="showPart('login')" class="btn">Вийти</button>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Сімейний бюджет</p>
+    </footer>
+  </section>
+
+  <section [ngClass]="{'hidden': currentPart !== 'login'}">
+    <body>
+      <div class="container">
+          <h2>Вхід</h2>
+          <form action="login.php" method="post">
+              <input class="inp" type="text" name="username" placeholder="Логін" [(ngModel)]="loggined_id" required>
+              <input class="inp" type="password" name="password" placeholder="Пароль" [(ngModel)]="loggined_password" required>
+              <input class="btn" type="submit" value="Вхід" (click)="showPart('landing')" (click)="chooseUser(loggined_id)">
+          </form>
+      </div>
+
+
+    </body>
+  </section>
+    <style>
+        body {
+        background-image: url('assets/bg_1.jpg');
+        /* background-size: cover;  */
+        background-position: center;
+        /* background-repeat: no-repeat;  */
+        }
+    </style>
+
+</body>
+</html>
