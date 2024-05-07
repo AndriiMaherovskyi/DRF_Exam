@@ -47,4 +47,16 @@ export class ApiService {
     const body = {id: budget.id, balance: budget.balance, familyId_id: budget.familyId_id};
     return this.http.post(this.baseurl + '/api/dataBudget/create/', body, {headers: this.httpHeaders})
   }
+
+  getAllTransactions(): Observable<any>{
+    return this.http.get(this.baseurl + '/api/dataTransaction/', {headers: this.httpHeaders});
+  }
+  createTransaction(transaction:any): Observable<any> {
+    const body = {id: transaction.id, description: transaction.description, amount: transaction.amount, familyId_id: transaction.familyId_id, memberId: transaction.memberId, isFamilyExpense: transaction.isFamilyExpense};
+    return this.http.post(this.baseurl + '/api/dataTransaction/create/', body, {headers: this.httpHeaders})
+  }
+
+  getAllAuthUser(): Observable<any>{
+    return this.http.get(this.baseurl + '/api/dataUser/', {headers: this.httpHeaders});
+  }
 }

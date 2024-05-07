@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from django.forms import model_to_dict
 from django.http import HttpResponseRedirect
 from rest_framework import generics, viewsets, status
@@ -7,8 +8,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView, View
 from django.http import JsonResponse
 
-from .models import users, families, family_budgets
-from .serializers import usersSerializer, familySerializer, family_budgetSerializer
+from .models import users, families, family_budgets, transactions
+from .serializers import usersSerializer, familySerializer, family_budgetSerializer, transactionSerializer, \
+    UserSerializer, CustomUserSerializer
+
+from django.contrib.auth.models import User
+
 
 # Create your views here.
 
@@ -602,8 +607,86 @@ def get_data_budget(request):
 def index_budget(request):
     return render(request, 'Lab_2_AJAX/index_budget.html')
 
+class BasicAppAPIViewTransaction(APIView):
+    def get(self, request):
+        transaction = transactions.objects.all()
+        serializer = transactionSerializer(transaction, many=True)
+        return JsonResponse({'transactions': serializer.data})
+
+    def post(self, request):
+        serializer = transactionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({'message': 'Transaction created successfully'}, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def get_data_transaction(request):
+    api_response = BasicAppAPIViewTransaction.as_view()(request)
+    return api_response
+
 def landing_budget(request):
     return render(request, 'Lab_2_AJAX/landing_page.html')
 
 def login(request):
     return render(request, 'Lab_2_AJAX/login_page.html')
+
+
+# Клас API для отримання списку всіх користувачів
+class BasicAppAPIViewUser(APIView):
+    def get(self, request):
+        users = User.objects.all()  # Використовуємо змінну з маленької літери, щоб уникнути конфлікту імен
+        serializer = UserSerializer(users, many=True)  # Передбачається, що UserSerializer створений
+        return Response({'users': serializer.data})  # Використовуємо Response від DRF
+
+# Функція для отримання даних через API
+def get_data_User(request):
+    api_view = BasicAppAPIViewUser.as_view()  # Отримуємо обробник APIView
+    api_response = api_view(request)  # Викликаємо API з переданим запитом
+    return api_response
+
+# class RegisterUser(APIView):
+#     def post(self, request):
+#         serializer = UserSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RegisterUser(APIView):
+    def post(self, request):
+        # Створення базового користувача
+        user_serializer = UserSerializer(data=request.data)
+
+        # Якщо базовий користувач валідний
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return Response({"message": "User and CustomUser created successfully"}, status=status.HTTP_201_CREATED)
+
+        # Якщо є помилка у базовому користувачі
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoginUser(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            # Включаємо дані користувача у відповідь
+            user_data = {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+            }
+            return Response(
+                {"message": "Login successful", "user": user_data},
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            {"error": "Invalid credentials"},
+            status=status.HTTP_400_BAD_REQUEST
+        )

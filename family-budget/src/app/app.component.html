@@ -1,45 +1,4 @@
-<!-- <h2>Page work!!!</h2>
-<ul>
-  <li *ngFor="let user of users">
-    <h2>ID {{user.id}}</h2>
-    <h2 (click)="userClicked(user)">Name {{user.username}}</h2>
-    <h2>Email {{user.email}}</h2>
-  </li>
-</ul>
-<hr>
-Id<input type="number" [(ngModel)]="selectedUser.id"/><br>
-Username<input type="text" [(ngModel)]="selectedUser.username"/><br>
-Email<input type="text" [(ngModel)]="selectedUser.email"/><br>
-Password<input type="text" [(ngModel)]="selectedUser.password"/><br>
-Family id<input type="text" [(ngModel)]="selectedUser.familyId_id"/><br>
-<button (click)="updateUser()"> PUT</button>
-<button (click)="createUser()">POST</button>
-<ul>
-  <li *ngFor="let budget of budgets">
-    <h2>ID {{budget.id}}</h2>
-    <h2 (click)="budgetClicked(budget)">Name {{budget.balance}}</h2>
-  </li>
-</ul>
-<hr>
-Id<input type="number" [(ngModel)]="selectedBudget.id"/><br>
-Balance<input type="number" [(ngModel)]="selectedBudget.balance"/><br>
-Family id<input type="text" [(ngModel)]="selectedBudget.familyId_id"/><br>
-<button (click)="updateBudget()"> PUT</button>
-<button (click)="addToBudget()"> ADD </button>
-<button (click)="takeFromBudget()"> TAKE </button>
-<button (click)="createBudget()">POST</button>
-<ul>
-  <li *ngFor="let family of families">
-    <h2>ID {{family.id}}</h2>
-    <h2 (click)="familyClicked(family)">Name {{family.name}}</h2>
-  </li>
-</ul>
-<hr>
-Id<input type="number" [(ngModel)]="selectedFamily.id"/><br>
-Name<input type="text" [(ngModel)]="selectedFamily.name"/><br>
-<button (click)="updateFamily()"> PUT</button>
-<button (click)="createFamily()">POST</button>
- -->
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +14,7 @@ Name<input type="text" [(ngModel)]="selectedFamily.name"/><br>
 
   <section [ngClass]="{'hidden': currentPart !== 'landing'}">
     <header class="header">
-        <a href="index.html" class="logo">Сімейний бюджет</a>
+        <a (click)="showSection('main')" (click)="RenderChartFamily()" class="logo">Сімейний бюджет</a>
 
         <input type="checkbox" id="check">
         <label for="check" class="icons">
@@ -64,112 +23,138 @@ Name<input type="text" [(ngModel)]="selectedFamily.name"/><br>
         </label>
 
         <nav class="navbar">
-            <!-- <a href="#" style="--i:0;" class="toggle-link" (click)="showSection('main')">Головна</a> -->
-            <!-- <a href="#" style="--i:1;" id="income-expenses-link">Дохід/Витрати</a> -->
-            <a href="#" style="--i:1;" class="toggle-link" (click)="showSection('income-expense-section')">Дохід/Витрати</a>
+             <a href="#" style="--i:0;" class="toggle-link" (click)="showSection('main')">Головна</a>
+            <a href="#" style="--i:1;" class="toggle-link" (click)="showSection('income-expense-section')" (click)="RenderChart()">Дохід/Витрати</a>
             <a href="#" style="--i:2;" class="toggle-link" (click)="showSection('add-to-family')">Додати до сім'ї</a>
-            <a href="#" style="--i:3;" class="toggle-link" (click)="showSection('create-family')">Створити сім'ю</a>
-            <a href="#" style="--i:3;" class="toggle-link" (click)="showSection('create-budget')">Створити бюджет</a>
+<!--            <a href="#" style="&#45;&#45;i:3;" class="toggle-link" (click)="showSection('create-family')">Створити сім'ю</a>-->
+<!--            <a href="#" style="&#45;&#45;i:3;" class="toggle-link" (click)="showSection('create-budget')">Створити бюджет</a>-->
             <a href="#" style="--i:4;" class="toggle-link" (click)="showSection('personal-info')">Персональний кабінет</a>
         </nav>
     </header>
     <main>
         <section class="budget toggle-section" [ngClass]="{'hidden': currentSection !== 'main'}">
             <div class="income">
-                <h2>Дохід</h2>
-                <p>+ 345.50</p>
-                <p>+ 1200.00</p>
-                <p>+ 840.00</p>
-                <p>+ 4500.00</p>
-                <p>+ 1900.20</p>
+                <h2>Дохід усієї сім'ї</h2>
+                    <p *ngFor="let transaction of loggined_transactions_income_family">
+                      <span>{{transaction.person}}: </span>
+                      <span>+ {{ transaction.transaction }} грн</span>
+                      <span class="date"> {{ transaction.date | date: 'yyyy-MM-dd' }} </span>
+                    </p>
             </div>
             <div class="expenses">
-                <h2>Витрати</h2>
-                <p>- 344.15</p>
-                <p>- 120.50</p>
-                <p>- 84.20</p>
-                <p>- 450.21</p>
-                <p>- 19.20</p>
+                <h2>Витрати всієї сім'ї</h2>
+                    <p *ngFor="let transaction of loggined_transactions_outcome_family">
+                      <span>{{transaction.person}}: </span>
+                      <span>- {{ transaction.transaction }} грн</span>
+                      <span class="date"> {{ transaction.date | date: 'yyyy-MM-dd' }} </span>
+                    </p>
             </div>
             <div class="summary">
-                <h2>Загальний звіт</h2>
-                <p>+ 345.50</p>
-                <p>- 84.20</p>
-                <p>+ 1200.00</p>
-                <p>- 120.50</p>
-                <p>+ 840.00</p>
-                <p>- 450.21</p>
-                <p>+ 4500.00</p>
-                <p>- 19.20</p>
-                <p>+ 1900.20</p>
-                <p>- 344.15</p>
+                <h2>Загальний звіт всієї сім'ї</h2>
+                    <p *ngFor="let transaction of loggined_transactions_total_family">
+                      <span>{{transaction.person}}: </span>
+                      <span>{{transaction.symbol}} {{ transaction.transaction }} грн</span>
+                      <span class="date"> {{ transaction.date | date: 'yyyy-MM-dd' }} </span>
+                    </p>
+            </div>
+            <div class="income_add">
+              <h2>Інфографіка всієї сім'ї</h2>
+                <canvas id="familyChart"></canvas>
             </div>
         </section>
         <section class="box toggle-section hidden" [ngClass]="{'hidden': currentSection !== 'income-expense-section'}">
                 <div class="expenses_add" >
                     <h2>Додати витрату</h2>
                     <input placeholder="0.00" type="number" class="inp" [(ngModel)]="toTake">
-                    <button class="btn" (click)="takeFromLogginedBudget()">Додати</button>
+                    <button class="btn" (click)="takeFromLogginedBudget()" (click)="chooseLoginedUser()">Додати</button>
                 </div>
                 <div class="expenses_add">
                     <h2>Витрати</h2>
-                    <p>- 344.15</p>
-                    <p>- 120.50</p>
-                    <p>- 84.20</p>
-                    <p>- 450.21</p>
-                    <p>- 19.20</p>
+                    <p *ngFor="let transaction of loggined_transactions_outcome">- {{ transaction.transaction }} грн
+                      <span class="date"> {{ transaction.date | date: 'yyyy-MM-dd' }} </span>
+                    </p>
+<!--                    <p *ngFor="let date of loggined_transactions_outcome_date"> {{ date | date: 'yyyy-MM-dd' }}</p>-->
                     <p *ngFor="let outcome of outcomes">- {{ outcome }}</p>
                 </div>
                 <div class="income_add">
                     <h2>Додати дохід</h2>
                     <input placeholder="0.00" type="number" class="inp" [(ngModel)]="toAdd">
-                    <button class="btn" (click)="addToLogginedBudget()">Додати</button>
+                    <button class="btn" (click)="addToLogginedBudget()" (click)="chooseLoginedUser()">Додати</button>
                 </div>
                 <div class="income_add">
                     <h2>Дохід</h2>
-                    <p>+ 345.50</p>
-                    <p>+ 1200.00</p>
-                    <p>+ 840.00</p>
-                    <p>+ 4500.00</p>
-                    <p>+ 1900.20</p>
+                    <p *ngFor="let transaction of loggined_transactions_income">+ {{ transaction.transaction }} грн
+                      <span class="date"> {{ transaction.date | date: 'yyyy-MM-dd' }} </span>
+                    </p>
+<!--                    <p *ngFor="let date of loggined_transactions_income_date"> {{ date | date: 'yyyy-MM-dd' }}</p>-->
                     <p *ngFor="let income of incomes">+ {{ income }}</p>
                 </div>
+<!--                <div class="expenses_add">-->
+<!--                    <h2>Витрати всієї сім'ї</h2>-->
+<!--                    <p *ngFor="let transaction of loggined_transactions_outcome_family">-->
+<!--                      <span>{{transaction.person}}: </span>-->
+<!--                      <span>- {{ transaction.transaction }} грн</span>-->
+<!--                      <span class="date"> {{ transaction.date | date: 'yyyy-MM-dd' }} </span>-->
+<!--                    </p>-->
+<!--                </div>-->
+<!--                 <div class="income_add">-->
+<!--                    <h2>Дохід усієї сім'ї</h2>-->
+<!--                    <p *ngFor="let transaction of loggined_transactions_income_family">-->
+<!--                      <span>{{transaction.person}}: </span>-->
+<!--                      <span>+ {{ transaction.transaction }} грн</span>-->
+<!--                      <span class="date"> {{ transaction.date | date: 'yyyy-MM-dd' }} </span>-->
+<!--                    </p>-->
+<!--                </div>-->
+                <div class="diagram">
+                  <h2>Інфографіка користувача</h2>
+                  <canvas id="myChart"></canvas>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         </section>
         <section class="box toggle-section hidden" [ngClass]="{'hidden': currentSection !== 'add-to-family'}">
             <div class="add-to-family">
                 <h2>Додати до сім'ї</h2>
-                <input placeholder="id користувача" type="number" class="inp" [(ngModel)]="selectedUser.id">
-                <input placeholder="ім'я" class="inp" [(ngModel)]="selectedUser.username">
-                <input placeholder="пошта" class="inp" [(ngModel)]="selectedUser.email">
-                <input placeholder="пароль" class="inp" [(ngModel)]="selectedUser.password">
-                <input placeholder="id сім'ї" type="text" class="inp" [(ngModel)]="selectedUser.familyId_id"/>
-                <button class="btn" (click)="createUser()">Додати</button>
+<!--                <input placeholder="id користувача" type="number" class="inp" [(ngModel)]="selectedUser.id">-->
+<!--                <input placeholder="ім'я" class="inp" [(ngModel)]="selectedUser.username">-->
+<!--                <input placeholder="пошта" class="inp" [(ngModel)]="selectedUser.email">-->
+<!--                <input placeholder="пароль" class="inp" [(ngModel)]="selectedUser.password">-->
+<!--                <input placeholder="id сім'ї" type="text" class="inp" [(ngModel)]="selectedUser.familyId_id"/>-->
+<!--                <button class="btn" (click)="createUser()">Додати</button>-->
+                <form (submit)="onRegister()">
+                  <input class="inp" type="text" name="username" placeholder="Логін" [(ngModel)]="username_Register" name="username" required />
+                  <input class="inp" type="text" name="name" placeholder="Ім'я" [(ngModel)]="firstName_Register" name="firstName" />
+                  <input class="inp" type="text" name="email" placeholder="Пошта" [(ngModel)]="email_Register" name="email" required type="email" />
+                  <input class="inp" type="text" name="password" placeholder="Пароль" [(ngModel)]="password_Register" name="password" required type="password" />
+<!--                  <input class="inp" type="text" name="last_name" placeholder="Сім'я" [(ngModel)]="familyId_id_Register" name="familyId" />-->
+                  <button class="btn" type="submit" >Додати</button>
+                </form>
             </div>
         </section>
-        <section class="box toggle-section hidden" [ngClass]="{'hidden': currentSection !== 'create-family'}">
-            <div class="create-family">
-                <h2>Створити сім'ю</h2>
-                <input placeholder="id сім'ї" type="number" class="inp" [(ngModel)]="selectedFamily.id">
-                <input placeholder="прізвище сім'ї" class="inp" [(ngModel)]="selectedFamily.name">
-                <button class="btn" (click)="createFamily()">Створити</button>
-            </div>
-        </section>
-        <section class="box toggle-section hidden" [ngClass]="{'hidden': currentSection !== 'create-budget'}">
-            <div class="create-family">
-                <h2>Створити бюджет</h2>
-                <input placeholder="id бюджету" type="number" class="inp" [(ngModel)]="selectedBudget.id">
-                <input placeholder="баланс" type="number" class="inp" [(ngModel)]="selectedBudget.balance">
-                <input placeholder="id сім'ї" class="inp" [(ngModel)]="selectedBudget.familyId_id">
-                <button class="btn" (click)="createBudget()">Створити</button>
-            </div>
-        </section>
+<!--        <section class="box toggle-section hidden" [ngClass]="{'hidden': currentSection !== 'create-family'}">-->
+<!--            <div class="create-family">-->
+<!--                <h2>Створити сім'ю</h2>-->
+<!--                <input placeholder="id сім'ї" type="number" class="inp" [(ngModel)]="selectedFamily.id">-->
+<!--                <input placeholder="прізвище сім'ї" class="inp" [(ngModel)]="selectedFamily.name">-->
+<!--                <button class="btn" (click)="createFamily()">Створити</button>-->
+<!--            </div>-->
+<!--        </section>-->
+<!--        <section class="box toggle-section hidden" [ngClass]="{'hidden': currentSection !== 'create-budget'}">-->
+<!--            <div class="create-family">-->
+<!--                <h2>Створити бюджет</h2>-->
+<!--                <input placeholder="id бюджету" type="number" class="inp" [(ngModel)]="selectedBudget.id">-->
+<!--                <input placeholder="баланс" type="number" class="inp" [(ngModel)]="selectedBudget.balance">-->
+<!--                <input placeholder="id сім'ї" class="inp" [(ngModel)]="selectedBudget.familyId_id">-->
+<!--                <button class="btn" (click)="createBudget()">Створити</button>-->
+<!--            </div>-->
+<!--        </section>-->
         <section class="box toggle-section hidden" [ngClass]="{'hidden': currentSection !== 'personal-info'}">
             <div class="personal-info">
-                <p class="font">Ім'я: {{ logginedUser.username }}</p>
+                <p class="font">Ім'я: {{ logginedUser.first_name }}</p>
                 <p class="font">Сім'я: {{logginedFamily.name }}</p>
                 <p class="font">Пошта: {{ logginedUser.email }}</p>
                 <p class="font">Баланс: {{ userBalance}}</p>
-                <button (click)="showPart('login')" class="btn">Вийти</button>
+                <button (click)="showPart('login')" (click)="onLogout()" class="btn">Вийти</button>
             </div>
         </section>
     </main>
@@ -182,14 +167,89 @@ Name<input type="text" [(ngModel)]="selectedFamily.name"/><br>
     <body>
       <div class="container">
           <h2>Вхід</h2>
-          <form action="login.php" method="post">
-              <input class="inp" type="text" name="username" placeholder="Логін" [(ngModel)]="loggined_id" required>
-              <input class="inp" type="password" name="password" placeholder="Пароль" [(ngModel)]="loggined_password" required>
-              <input class="btn" type="submit" value="Вхід" (click)="showPart('landing')" (click)="chooseUser(loggined_id)">
+          <form action="login.php" method="post" (submit)="onLogin()">
+              <input class="inp" type="text" name="username" placeholder="Логін" [(ngModel)]="username_Login" name="username" required />
+              <input class="inp" type="password" name="password" placeholder="Пароль" [(ngModel)]="password_Login" name="password" required type="password" />
+<!--              <input class="inp" type="text" name="username" placeholder="Логін" [(ngModel)]="loggined_id" required>-->
+<!--              <input class="inp" type="password" name="password" placeholder="Пароль" [(ngModel)]="loggined_password" required>-->
+<!--              <input class="btn" type="submit" value="Вхід" (click)="showPart('landing')" (click)="chooseUser(loggined_id)">-->
+              <input class="btn" type="submit" value="Вхід" (click)="showPart('landing')" (click)="chooseLoginedUser()">
+              <input class="btn" value="Реєстрація" (click)="showPart('registration')">
+              <div class="button-container">
+                <input class="btn_b" value="Реєстрація Сім'ї" (click)="showPart('registration_family')">
+                <input class="btn_b" value="Створення б'юджету" (click)="showPart('registration_budget')">
+              </div>
           </form>
+<!--          <h2>Login</h2>-->
+<!--            <form (submit)="onLogin()">-->
+<!--              <div>-->
+<!--                <label>Username:</label>-->
+<!--                <input [(ngModel)]="username_Login" name="username" required />-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <label>Password:</label>-->
+<!--                <input [(ngModel)]="password_Login" name="password" required type="password" />-->
+<!--              </div>-->
+<!--              <button type="submit">Login</button>-->
+<!--            </form>-->
       </div>
 
+    </body>
+  </section>
+  <section [ngClass]="{'hidden': currentPart !== 'registration'}">
+    <body>
+      <div class="container">
+        <h2>Реєстрація</h2>
+            <form (submit)="onRegister()">
+              <div>
+                <input class="inp" type="text" name="username" placeholder="Логін" [(ngModel)]="username_Register" name="username" required />
+              </div>
+              <div>
+                <input class="inp" type="text" name="username" placeholder="Ім'я" [(ngModel)]="firstName_Register" name="firstName" />
+              </div>
+              <div>
+                <input class="inp" type="text" name="username" placeholder="Пошта" [(ngModel)]="email_Register" name="email" required type="email" />
+              </div>
+              <div>
+                <input class="inp" type="text" name="username" placeholder="Пароль" [(ngModel)]="password_Register" name="password" required type="password" />
+              </div>
+              <div>
+                <input class="inp" type="text" name="username" placeholder="Сім'я" [(ngModel)]="familyId_id_Register" name="familyId" />
+              </div>
+              <div>
+                <button class="btn" type="submit" (click)="showPart('login')">Зареєструватися</button>
+              </div>
+              <div class="button-container">
+                <input class="btn" value="Повернутися" (click)="showPart('login')">
+              </div>
 
+            </form>
+      </div>
+    </body>
+  </section>
+  <section [ngClass]="{'hidden': currentPart !== 'registration_family'}">
+    <body>
+      <div class="container">
+          <h2>Створити сім'ю</h2>
+          <input placeholder="id сім'ї" type="number" class="inp" [(ngModel)]="selectedFamily.id">
+          <input placeholder="прізвище сім'ї" class="inp" [(ngModel)]="selectedFamily.name">
+          <button class="btn" (click)="createFamily()">Створити</button>
+          <div class="button-container"></div>
+          <input class="btn" value="Повернутися" (click)="showPart('login')">
+      </div>
+    </body>
+  </section>
+  <section [ngClass]="{'hidden': currentPart !== 'registration_budget'}">
+    <body>
+      <div class="container">
+          <h2>Створити бюджет</h2>
+          <input placeholder="id бюджету" type="number" class="inp" [(ngModel)]="selectedBudget.id">
+          <input placeholder="баланс" type="number" class="inp" [(ngModel)]="selectedBudget.balance">
+          <input placeholder="id сім'ї" class="inp" [(ngModel)]="selectedBudget.familyId_id">
+          <button class="btn" (click)="createBudget()">Створити</button>
+          <div class="button-container"></div>
+          <input class="btn" value="Повернутися" (click)="showPart('login')">
+      </div>
     </body>
   </section>
     <style>

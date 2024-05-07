@@ -40,5 +40,18 @@ class transactions(models.Model):
     amount = models.FloatField(default=0)
     date = models.DateTimeField(auto_now_add=True)
     familyId = models.ForeignKey('families', on_delete=models.PROTECT)
-    memberId = models.ForeignKey('users', on_delete=models.PROTECT, null=True)
+    # memberId = models.ForeignKey('users', on_delete=models.PROTECT, null=True)
+    memberId = models.CharField(max_length=255)
     isFamilyExpense = models.BooleanField(default=False)
+
+
+
+
+from django.contrib.auth.models import User
+
+class Family(models.Model):
+    name = models.CharField(max_length=100)
+
+class CustomUser(User):
+    familyId = models.ForeignKey(families, on_delete=models.CASCADE)
+

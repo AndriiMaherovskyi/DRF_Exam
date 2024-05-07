@@ -189,6 +189,17 @@ main {
   margin-bottom: 20px;
 }
 
+.diagram {
+  flex: 1 1 500px;
+  /*max-width: 500px;*/
+  margin: 10px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+}
+
+
+
 /* --- */
 /* Add to family, Create family &Personal info */
 .add-to-family,
@@ -221,6 +232,12 @@ main {
   border: none; /* Видалення рамки */
   padding: 10px; /* Відступи в середині */
   border-radius: 5px; /* Закруглені кути */
+}
+
+.date {
+  font-size: 10px;
+  color: #303030;
+  opacity: 50%;
 }
 
 .btn {
@@ -297,20 +314,47 @@ body {
   width: 100%;
 }
 
-.btn {
-  background-color: #333; /* Темно-сірий фон */
-  color: #fff; /* Білий текст */
-  border: none; /* Видалення рамки */
-  padding: 10px 20px; /* Відступи в середині */
+/*.btn {*/
+/*  background-color: #333; !* Темно-сірий фон *!*/
+/*  color: #fff; !* Білий текст *!*/
+/*  border: none; !* Видалення рамки *!*/
+/*  padding: 10px 20px; !* Відступи в середині *!*/
+/*  margin: 10px 0 0 0;*/
+/*  border-radius: 30px; !* Закруглені кути *!*/
+/*  cursor: pointer; !* Змінює вигляд курсору при наведенні *!*/
+/*  height: 45px;*/
+/*  width: 100%;*/
+/*}*/
+
+/*.btn:hover {*/
+/*  background-color: #fff; !* Темно-сірий фон при наведенні *!*/
+/*  color: #333;*/
+/*  border-style: solid;*/
+/*  border-color: #333;*/
+/*}!*# sourceMappingURL=style_login.css.map *!*/
+
+/* Стиль для кнопок */
+.btn_b {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #333;
+
+  padding: 10px 20px; /* Відступи всередині */
   border-radius: 30px; /* Закруглені кути */
   cursor: pointer; /* Змінює вигляд курсору при наведенні */
   height: 45px;
-  width: 100%;
+  flex: 1; /* Кожна кнопка займає рівну частину контейнера */
 }
 
-.btn:hover {
-  background-color: #fff; /* Темно-сірий фон при наведенні */
-  color: #333;
-  border-style: solid;
-  border-color: #333;
-}/*# sourceMappingURL=style_login.css.map */
+.btn_b:hover {
+  background-color: #333; /* Темно-сірий фон */
+  color: #fff; /* Білий текст */
+  border: none; /* Видалення рамки */
+}
+
+/* Контейнер для розміщення кнопок поруч */
+.button-container {
+  display: flex; /* Використання flex для горизонтального розміщення */
+  gap: 10px; /* Відстань між кнопками */
+  margin-top: 10px; /* Відстань від верху */
+}

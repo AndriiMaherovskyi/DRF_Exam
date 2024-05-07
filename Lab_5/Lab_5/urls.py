@@ -34,7 +34,9 @@ from basicApp.views import (basicAppAPIView, SingleGetView, basicAppAPIViewFamil
                             UserView, UserViewPut, HomeView, get_data, index, BasicAppAPIView,
                             BasicAppAPIViewFamily, get_data_family, index_family,
                             BasicAppAPIViewBudget, get_data_budget, index_budget,
-                            landing_budget, login)
+                            BasicAppAPIViewTransaction, get_data_transaction,
+                            BasicAppAPIViewUser, get_data_User,
+                            landing_budget, login, RegisterUser, LoginUser)
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -84,8 +86,14 @@ urlpatterns = [
     path('api/dataBudget/create/', BasicAppAPIViewBudget.as_view(), name='create_budget'),
     path('api/dataBudget/update/<int:pk>/', BasicAppAPIViewBudget.as_view(), name='update_budget'),
     path('api/dataBudget/page', index_budget, name='index_budget'),
+    path('api/dataTransaction/', get_data_transaction, name='get_data_transaction'),
+    path('api/dataTransaction/create/', BasicAppAPIViewTransaction.as_view(), name='create_transaction'),
+    path('api/dataUser/', get_data_User, name='get_data_User'),
     path('api/landingBudget/page', landing_budget, name='landing_budget'),
     path('api/login', login, name='login'),
+
+    path('register/', RegisterUser.as_view(), name='register_user'),
+    path('login/', LoginUser.as_view(), name='login_user'),
 
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

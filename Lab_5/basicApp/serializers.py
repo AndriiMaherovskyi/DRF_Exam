@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import users, families, family_budgets
+from .models import users, families, family_budgets, transactions, CustomUser
+from django.contrib.auth.models import User
 
 
 # class Meta:
@@ -58,7 +59,7 @@ class family_budgetSerializer(serializers.ModelSerializer):
 
     id = serializers.IntegerField()
     familyId_id = serializers.CharField()
-    balance = serializers.IntegerField()
+    balance = serializers.FloatField()
     createdAt = serializers.DateTimeField(read_only=True)
     updatedAt = serializers.DateTimeField(read_only=True)
 
@@ -71,3 +72,42 @@ class family_budgetSerializer(serializers.ModelSerializer):
         instance.balance = validated_data.get('balance', instance.balance)
         instance.save()
         return instance
+
+class transactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = family_budgets
+        fields = ('id', 'description', 'amount', 'date', 'familyId_id', 'memberId', 'isFamilyExpense')
+
+    id = serializers.IntegerField()
+    description = serializers.CharField(style={'base_template': 'textarea.html'})
+    amount = serializers.FloatField()
+    date = serializers.DateTimeField(read_only=True)
+    familyId_id = serializers.CharField()
+    memberId = serializers.CharField(max_length=255)
+    isFamilyExpense = serializers.BooleanField()
+
+    def create(self, validated_data):
+        return transactions.objects.create(**validated_data)
+
+##########################################
+
+# class UserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ('id', 'username', 'first_name', 'email', 'password')
+#         extra_kwargs = {'password': {'write_only': True}}
+#
+#     def create(self, validated_data):
+#         return User.objects.create_user(**validated_data)
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('user_ptr', 'familyId')  # Поля для розширеної інформації
+        extra_kwargs = {'user_ptr': {'read_only': True}}
